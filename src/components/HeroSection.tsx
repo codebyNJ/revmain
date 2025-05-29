@@ -47,7 +47,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToSection }) => {
               {/* Screen Content */}
               <div className="bg-white rounded-xl p-3 sm:p-8 h-full relative">
                 <div className="bg-[#ea590d] text-white px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm font-bold mb-3 sm:mb-6 rounded-full inline-block">
-                  🚀 Live • 2.5% CTR
+                  🚀 Pilot Phase • 2.5% CTR
                 </div>
 
                 <h1 className="text-lg sm:text-3xl font-black mb-3 sm:mb-6 overflow-hidden">
@@ -59,9 +59,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToSection }) => {
                 </h1>
 
                 <div className="bg-[#ea590d] text-white rounded-xl p-2 sm:p-4 mb-3 sm:mb-6 shadow-lg">
-                  <div className="text-lg sm:text-2xl font-black mb-1">60₹</div>
+                  <div className="text-lg sm:text-2xl font-black mb-1">₹1</div>
                   <div className="text-xs sm:text-sm font-bold mb-1">Per Minute</div>
-                  <div className="text-xs opacity-90">Interactive • Cheapest</div>
+                  <div className="text-xs opacity-90">Interactive • Affordable • Highest Reach</div>
                 </div>
 
                 <p className="text-xs sm:text-sm mb-3 sm:mb-6 font-semibold text-[#8B8B8B]">
