@@ -67,7 +67,7 @@ export default function CultureExperience() {
 
               <div className="mt-6 md:mt-8">
                 <ScrollAnimation delay={0.6}>
-                  <h4 className="text-base md:text-lg lg:text-xl font-semibold mb-6 text-gray-800">Available Ads</h4>
+                  <h4 className="text-base md:text-lg lg:text-xl font-semibold mb-6 text-gray-800">Sample Ads</h4>
                 </ScrollAnimation>
 
                 <div className="space-y-4 max-h-[280px] md:max-h-[300px] overflow-y-auto pr-2">
