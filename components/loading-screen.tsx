@@ -49,14 +49,6 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
           className="mb-8"
         >
           <img src="/images/rev-logo.png" alt="REV" className="h-16 md:h-20 w-auto mx-auto mb-4" />
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-2"
-          >
-            REV
-          </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
