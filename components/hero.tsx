@@ -3,8 +3,89 @@
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
+import { useEffect } from "react"
+
+// Declare Tally global types
+declare global {
+  interface Window {
+    Tally: {
+      openPopup: (formId: string, options?: PopupOptions) => void;
+      closePopup: (formId: string) => void;
+    };
+  }
+}
+
+type PopupOptions = {
+  key?: string;
+  layout?: 'default' | 'modal';
+  width?: number;
+  alignLeft?: boolean;
+  hideTitle?: boolean;
+  overlay?: boolean;
+  emoji?: {
+    text: string;
+    animation: 'none' | 'wave' | 'tada' | 'heart-beat' | 'spin' | 'flash' | 'bounce' | 'rubber-band' | 'head-shake';
+  };
+  autoClose?: number;
+  showOnce?: boolean;
+  doNotShowAfterSubmit?: boolean;
+  customFormUrl?: string;
+  hiddenFields?: {
+    [key: string]: any;
+  };
+  onOpen?: () => void;
+  onClose?: () => void;
+  onPageView?: (page: number) => void;
+  onSubmit?: (payload: any) => void;
+};
 
 export default function Hero() {
+  const formId = 'mKZGE7';
+
+  useEffect(() => {
+    // Load Tally script if not already loaded
+    if (!document.querySelector('script[src="https://tally.so/widgets/embed.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://tally.so/widgets/embed.js';
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  const handleStartJourney = () => {
+    // Check if Tally is loaded
+    if (typeof window !== 'undefined' && window.Tally) {
+      window.Tally.openPopup(formId, {
+        layout: 'modal',
+        width: 700,
+        overlay: true,
+        onOpen: () => {
+          console.log('Form opened');
+        },
+        onClose: () => {
+          console.log('Form closed');
+        },
+        onSubmit: (payload: any) => {
+          console.log('Form submitted:', payload);
+          // Handle form submission here
+        }
+      });
+    } else {
+      // Fallback if Tally hasn't loaded yet
+      console.warn('Tally not loaded yet');
+      // You could show a loading message or retry after a delay
+      setTimeout(() => {
+        if (window.Tally) {
+          window.Tally.openPopup(formId, {
+            layout: 'modal',
+            width: 700,
+            overlay: true
+          });
+        }
+      }, 1000);
+    }
+  };
+
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Background image with overlay */}
@@ -68,9 +149,12 @@ export default function Hero() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 hover:from-blue-700 hover:via-purple-700 hover:to-green-700 text-white text-sm md:text-lg px-6 md:px-10 py-4 md:py-6 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300">
+          <Button 
+            onClick={handleStartJourney}
+            className="group relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 hover:from-blue-700 hover:via-purple-700 hover:to-green-700 text-white text-sm md:text-lg px-6 md:px-10 py-4 md:py-6 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300"
+          >
             <span className="relative z-10 flex items-center">
-              Get Started
+              Start your Journey
               <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

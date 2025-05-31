@@ -1,8 +1,89 @@
 import { ArrowRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ScrollAnimation } from "@/components/ui/scroll-animation"
+import { useEffect } from "react"
+
+// Declare Tally global types
+declare global {
+  interface Window {
+    Tally: {
+      openPopup: (formId: string, options?: PopupOptions) => void;
+      closePopup: (formId: string) => void;
+    };
+  }
+}
+
+type PopupOptions = {
+  key?: string;
+  layout?: 'default' | 'modal';
+  width?: number;
+  alignLeft?: boolean;
+  hideTitle?: boolean;
+  overlay?: boolean;
+  emoji?: {
+    text: string;
+    animation: 'none' | 'wave' | 'tada' | 'heart-beat' | 'spin' | 'flash' | 'bounce' | 'rubber-band' | 'head-shake';
+  };
+  autoClose?: number;
+  showOnce?: boolean;
+  doNotShowAfterSubmit?: boolean;
+  customFormUrl?: string;
+  hiddenFields?: {
+    [key: string]: any;
+  };
+  onOpen?: () => void;
+  onClose?: () => void;
+  onPageView?: (page: number) => void;
+  onSubmit?: (payload: any) => void;
+};
 
 export default function Closing() {
+  const formId = 'mKZGE7';
+
+  useEffect(() => {
+    // Load Tally script if not already loaded
+    if (!document.querySelector('script[src="https://tally.so/widgets/embed.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://tally.so/widgets/embed.js';
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  const handleStartJourney = () => {
+    // Check if Tally is loaded
+    if (typeof window !== 'undefined' && window.Tally) {
+      window.Tally.openPopup(formId, {
+        layout: 'modal',
+        width: 700,
+        overlay: true,
+        onOpen: () => {
+          console.log('Form opened from Closing section');
+        },
+        onClose: () => {
+          console.log('Form closed');
+        },
+        onSubmit: (payload: any) => {
+          console.log('Form submitted:', payload);
+          // Handle form submission here
+        }
+      });
+    } else {
+      // Fallback if Tally hasn't loaded yet
+      console.warn('Tally not loaded yet');
+      // Retry after a delay
+      setTimeout(() => {
+        if (window.Tally) {
+          window.Tally.openPopup(formId, {
+            layout: 'modal',
+            width: 700,
+            overlay: true
+          });
+        }
+      }, 1000);
+    }
+  };
+
   return (
     <section className="py-16 md:py-20 bg-gradient-to-r from-blue-600 to-blue-800">
       <div className="container mx-auto px-6 md:px-4">
@@ -29,8 +110,11 @@ export default function Closing() {
           </ScrollAnimation>
 
           <ScrollAnimation delay={0.6}>
-            <Button className="bg-white text-blue-600 hover:bg-gray-100 text-sm md:text-base lg:text-lg px-6 md:px-8 py-4 md:py-6 rounded-md font-semibold">
-              Get Started <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
+            <Button 
+              onClick={handleStartJourney}
+              className="bg-white text-blue-600 hover:bg-gray-100 text-sm md:text-base lg:text-lg px-6 md:px-8 py-4 md:py-6 rounded-md font-semibold"
+            >
+              Start your Journey <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
             </Button>
           </ScrollAnimation>
         </div>
