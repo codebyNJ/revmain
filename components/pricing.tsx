@@ -15,7 +15,7 @@ export default function Pricing() {
             </div>
 
             <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 px-4">
-              <span className="text-green-600">₹799</span>
+              <span className="text-green-600">₹999</span>
               <span className="text-gray-800">/month.</span>
             </div>
             <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-8 px-4">
