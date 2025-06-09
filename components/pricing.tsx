@@ -42,7 +42,7 @@ export default function Pricing() {
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between items-center">
                       <span className="text-sm md:text-base text-gray-600">Monthly Cost</span>
-                      <span className="text-lg md:text-xl lg:text-2xl font-bold text-green-600">₹799</span>
+                      <span className="text-lg md:text-xl lg:text-2xl font-bold text-green-600">₹999</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm md:text-base text-gray-600">Per Second</span>
