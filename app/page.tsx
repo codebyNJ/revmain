@@ -1,31 +1,43 @@
-"use client"
-
-import { motion } from "framer-motion"
+import Navigation from "@/components/navigation"
 import Hero from "@/components/hero"
-import Navbar from "@/components/navbar"
-import CultureExperience from "@/components/culture-experience"
-import Solutions from "@/components/solutions"
-import PilotPhase from "@/components/pilot-phase"
-import Pricing from "@/components/pricing"
-import Closing from "@/components/closing"
+import OurClients from "@/components/our-clients"
+import WhatWeDo from "@/components/what-we-do"
+import TagLine from "@/components/tag-line"
+import ProcessSteps from "@/components/process-steps"
+import ContactSection from "@/components/contact-section"
 import Footer from "@/components/footer"
+import CircularCursor from "@/components/circular-cursor"
 
 export default function Home() {
   return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="min-h-screen bg-white"
-    >
-      <Navbar />
-      <Hero />
-      <CultureExperience />
-      <Solutions />
-      <PilotPhase />
-      <Pricing />
-      <Closing />
-      <Footer />
-    </motion.main>
+    <main className="relative min-h-screen bg-black text-white overflow-x-hidden">
+      {/* Custom Circular Cursor */}
+      <div className="hidden lg:block">
+        <CircularCursor />
+      </div>
+
+      {/* Background Image */}
+      <div
+        className="fixed inset-0 opacity-25 pointer-events-none z-0"
+        style={{
+          backgroundImage: "url(/images/background.png)",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+          backgroundSize: "cover",
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10">
+        <Navigation />
+        <Hero />
+        <OurClients />
+        <WhatWeDo />
+        <TagLine />
+        <ProcessSteps />
+        <ContactSection />
+        <Footer />
+      </div>
+    </main>
   )
 }

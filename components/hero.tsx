@@ -1,165 +1,97 @@
 "use client"
-
-import { ArrowRight, Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
-import { useEffect } from "react"
-
-// Declare Tally global types
-declare global {
-  interface Window {
-    Tally: {
-      openPopup: (formId: string, options?: PopupOptions) => void;
-      closePopup: (formId: string) => void;
-    };
-  }
-}
-
-type PopupOptions = {
-  key?: string;
-  layout?: 'default' | 'modal';
-  width?: number;
-  alignLeft?: boolean;
-  hideTitle?: boolean;
-  overlay?: boolean;
-  emoji?: {
-    text: string;
-    animation: 'none' | 'wave' | 'tada' | 'heart-beat' | 'spin' | 'flash' | 'bounce' | 'rubber-band' | 'head-shake';
-  };
-  autoClose?: number;
-  showOnce?: boolean;
-  doNotShowAfterSubmit?: boolean;
-  customFormUrl?: string;
-  hiddenFields?: {
-    [key: string]: any;
-  };
-  onOpen?: () => void;
-  onClose?: () => void;
-  onPageView?: (page: number) => void;
-  onSubmit?: (payload: any) => void;
-};
+import { useEffect, useRef } from "react"
+import Image from "next/image"
 
 export default function Hero() {
-  const formId = 'mKZGE7';
+  const growthLetters = ["G", "r", "o", "w", "t", "h"]
+  const heroRef = useRef<HTMLElement>(null)
+  const titleRef = useRef<HTMLDivElement>(null)
+  const descriptionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Load Tally script if not already loaded
-    if (!document.querySelector('script[src="https://tally.so/widgets/embed.js"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://tally.so/widgets/embed.js';
-      script.async = true;
-      document.head.appendChild(script);
-    }
-  }, []);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-fade-in-up")
+          }
+        })
+      },
+      { threshold: 0.1 },
+    )
 
-  const handleStartJourney = () => {
-    // Check if Tally is loaded
-    if (typeof window !== 'undefined' && window.Tally) {
-      window.Tally.openPopup(formId, {
-        layout: 'modal',
-        width: 700,
-        overlay: true,
-        onOpen: () => {
-          console.log('Form opened');
-        },
-        onClose: () => {
-          console.log('Form closed');
-        },
-        onSubmit: (payload: any) => {
-          console.log('Form submitted:', payload);
-          // Handle form submission here
-        }
-      });
-    } else {
-      // Fallback if Tally hasn't loaded yet
-      console.warn('Tally not loaded yet');
-      // You could show a loading message or retry after a delay
-      setTimeout(() => {
-        if (window.Tally) {
-          window.Tally.openPopup(formId, {
-            layout: 'modal',
-            width: 700,
-            overlay: true
-          });
-        }
-      }, 1000);
-    }
-  };
+    if (titleRef.current) observer.observe(titleRef.current)
+    if (descriptionRef.current) observer.observe(descriptionRef.current)
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-      {/* Background image with overlay */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/images/auto-rickshaw-ad.png"
-          alt="Auto rickshaw with digital advertisement"
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <div className="absolute inset-0 bg-black/50 z-5" />
-
-      {/* Dotted pattern overlay */}
-      <div
-        className="absolute inset-0 z-10 opacity-20"
-        style={{
-          backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
-          backgroundSize: "15px 15px",
-        }}
-      />
-
-      <div className="container mx-auto px-4 relative z-20 text-center">
-        <div className="mb-6">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center px-3 md:px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white/80 text-sm md:text-sm mb-4"
+    <section ref={heroRef} className="px-8 sm:px-12 lg:px-20 min-h-screen lg:min-h-[70vh] flex flex-col">
+      <div className="max-w-6xl mx-auto w-full flex flex-col h-screen lg:h-auto flex-1">
+        {/* Title - Centered on mobile */}
+        <div className="flex-1 flex flex-col justify-center lg:justify-start lg:py-16 text-center lg:text-left">
+          <div
+            ref={titleRef}
+            className="text-white/25 text-3xl sm:text-xl lg:text-2xl leading-tight mb-6 opacity-0 translate-y-8 transition-all duration-1000 ease-out"
           >
-            <Sparkles className="w-3 h-3 md:w-4 md:h-4 mr-2" />
-            India's First Digital Revolution
-          </motion.div>
+            {/* Mobile/Tablet - Normal text */}
+            <span className="font-itc text-7xl sm:text-5xl text-white block mb-4 lg:hidden hover:text-[#E65723] transition-colors duration-300">
+              Growth
+            </span>
+            {/* Desktop - Interactive letters */}
+            <span className="font-itc text-7xl text-white mb-4 hidden lg:block">
+              {growthLetters.map((letter, index) => (
+                <span
+                  key={index}
+                  className="inline-block transition-all duration-500 ease-out hover:font-black hover:text-[#E65723] cursor-pointer font-normal"
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                  }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </span>
+            <span className="hover:text-white transition-colors duration-300 cursor-default">as a service</span>
+          </div>
         </div>
 
-        <div className="overflow-hidden">
-          <motion.h1
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight px-2"
-          >
-            <span className="block">India&apos;s First</span>
-            <span className="block bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-              Smart Street Layer
-            </span>
-          </motion.h1>
+        {/* Description - Pushed to bottom but with more top margin */}
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-10 pb-16 lg:pb-0 lg:mt-12 mb-8">
+          <div className="flex-1 max-w-2xl text-center lg:text-left">
+            <div
+              ref={descriptionRef}
+              className="border-t-2 border-gradient-to-r from-white to-transparent pt-8 lg:pt-10 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-300"
+            >
+              <div className="text-2xl sm:text-lg lg:text-xl mb-6 lg:mb-8 leading-relaxed">
+                <span className="hover:text-[#E65723] transition-colors duration-300 cursor-default">
+                  We are REV, an
+                </span>{" "}
+                <span className="font-itc text-[#E65723] text-4xl sm:text-2xl lg:text-3xl hover:scale-105 inline-block transition-transform duration-300 cursor-pointer">
+                  engineering
+                </span>{" "}
+                <span className="hover:text-[#E65723] transition-colors duration-300 cursor-default">
+                  team that helps you to solve all your software and marketing chaos.
+                </span>
+              </div>
+              <div className="text-lg sm:text-sm lg:text-base text-white/80 hover:text-white transition-colors duration-300 cursor-default">
+                Based on Bengaluru, Since 2025 AI era.
+              </div>
+            </div>
+          </div>
+
+          {/* Hide image on mobile, show on larger screens */}
+          <div className="hidden lg:flex flex-shrink-0">
+            <Image
+              src="/images/talk_to_us.png"
+              alt="Talk to us"
+              width={128}
+              height={128}
+              className="w-28 h-28 animate-spin-slow hover:scale-110 transition-transform duration-300 cursor-pointer"
+            />
+          </div>
         </div>
-
-        <motion.p
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xl sm:text-2xl md:text-2xl lg:text-3xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed px-4"
-        >
-          Transform every street into a <span className="text-blue-300 font-semibold">measurable</span>,{" "}
-          <span className="text-green-300 font-semibold">intelligent</span> advertising platform
-        </motion.p>
-
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <Button 
-            onClick={handleStartJourney}
-            className="group relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 hover:from-blue-700 hover:via-purple-700 hover:to-green-700 text-white text-sm md:text-lg px-6 md:px-10 py-4 md:py-6 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300"
-          >
-            <span className="relative z-10 flex items-center">
-              Start your Journey
-              <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </Button>
-        </motion.div>
       </div>
     </section>
   )
